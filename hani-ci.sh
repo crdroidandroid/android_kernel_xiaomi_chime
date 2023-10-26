@@ -67,7 +67,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		# Set kernel name and version
 		hash=$(git log -n 1 --pretty=format:'%h' | cut -c 1-7)
 		lastcommit=$hash
-		REVISION=4.19-hanikrnl.KSU.$lastcommit
+		REVISION=4.19-hanikrnl.android-$lastcommit
 		ZIPNAME=""$REVISION"-chime-$(date '+%d.%m.%y-%H%M').zip"
 		echo -e ""
 		echo -e ""
@@ -78,7 +78,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		echo -e ""
 	if [ -d "$AK3_DIR" ]; then
 		cp -r $AK3_DIR AnyKernel3
-	elif ! git clone -q https://github.com/itsHanibee/AnyKernel3 -b master; then
+	elif ! git clone -q https://github.com/itsHanibee/AnyKernel3 -b testing; then
 			echo -e "\nAnyKernel3 repo not found locally and couldn't clone from GitHub! Aborting..."
 	fi
 		cp $kernel AnyKernel3
@@ -86,7 +86,6 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 
 		rm -rf out/arch/arm64/boot
 		cd AnyKernel3
-		git checkout master &> /dev/null
 		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 		cd ..
 
